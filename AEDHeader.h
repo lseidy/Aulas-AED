@@ -1,5 +1,10 @@
 #ifndef _AEDHEADER_H
-#define _AEDFEADER_H
+#define _AEDHEADER_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
 
 void menu(int *op);
 void limpa();

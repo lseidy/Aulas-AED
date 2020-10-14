@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <conio.h>
 #include "AEDHeader.h"
 
 void limpa(){ //pra nao ficar limpando toda hora
@@ -55,19 +51,19 @@ char* addnome(char *agenda, int *tam, int *i ){
     }while(strlen(novonome)>=49|| novonome[0] == '\n');
 
     limpa();
-    *tam = *tam + strlen(novonome);
+    *tam = *tam + strlen(novonome) + 1;
 
     if(*i==0){
         agenda = malloc(*tam*sizeof(char));
         strcpy(agenda,novonome); // recebe o novo nome inclusive o \n do final
         *i=*i+1; 
-        agenda[*tam] = '\0'; //coloca o \0 no final pro cod entender que ali é o ultimo caracter
+        agenda[*tam-1] = '\0'; //coloca o \0 no final pro cod entender que ali é o ultimo caracter
         return agenda;
     }else{
         posicao = strlen(agenda); //pega a o tamanho da agenda até agora
         agenda =  realloc(agenda, *tam*sizeof(char)); //realoca o tamanho da agenda
         strcpy(agenda+posicao,novonome); 
-        agenda[*tam]='\0'; //bota \0 no final pra entender que ali acaba
+        agenda[*tam-1]='\0'; //bota \0 no final pra entender que ali acaba
         *i=*i+1;
         return agenda;
     }    
@@ -113,6 +109,7 @@ char* apaga(char *agenda, int *tam, int *i){
                 agenda[n-m] = agenda[n+1]; //se encontrou o \n significa que a palavra pra remover acabou
             }else{
                 agenda[n-m] = agenda[n]; //o primeiro caracter da palavra a ser removida vai sendo jogando pra frente
+
                 m++; // vai contando pra ver o tamanho da palavra que vai ser removida
             }
         } 
@@ -122,6 +119,8 @@ char* apaga(char *agenda, int *tam, int *i){
         }
     }
     *i=*i-1;
+    *tam = strlen(agenda);
+    system("pause");
     agenda = realloc(agenda,*tam*sizeof(char));
     return agenda;
 }
