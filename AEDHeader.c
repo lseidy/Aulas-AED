@@ -18,7 +18,6 @@ void menu(int *op){
         printf("\n Digite Enter para sair . . . ");
         fflush(stdin);
         aux = getch();
-        fflush(stdin);
 
         if(aux == '\r'){ // testa se o usuario fechou o programa
             *op = '\r';
@@ -113,14 +112,13 @@ char* apaga(char *agenda, int *tam, int *i){
                 m++; // vai contando pra ver o tamanho da palavra que vai ser removida
             }
         } 
-        if(qtdnome> remover){
+        if(qtdnome > remover){
             agenda[n-m] = agenda[n+1]; //ignora o periodo entre n e m (ou seja a palavra)
 
         }
     }
     *i=*i-1;
     *tam = strlen(agenda);
-    system("pause");
     agenda = realloc(agenda,*tam*sizeof(char));
     return agenda;
 }
