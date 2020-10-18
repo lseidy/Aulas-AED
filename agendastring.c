@@ -1,5 +1,4 @@
 #include "AEDHeader.h"
-
 /*
     ********************ATENDCAO**************
     *PARA COMPILAR NO VS CODE, COLOQUE OS ARQUIVOS NA MESMA PASTA E DIGITE NO TERMINAL
@@ -9,14 +8,15 @@
     cmd /c .\"agenda.exe"    (ou nome que vc digitou)
 
 */
+
 int main(){
-    int op, i=0, tam=0;
+    int i=0, tam=0;
     char *agenda;
+    agenda = (char*) malloc(1*sizeof(char));
+    agenda[0] = '\0';
     
     do{
-        menu(&op);
-
-        switch(op){
+        switch(menu()){
             case 1:
                agenda = addnome(agenda, &tam, &i);
             break;
@@ -26,9 +26,11 @@ int main(){
             case 3:
                 listar(agenda);
             break;
+            case 0:
+                free(agenda);
+                return 0;
+            break;
         }  
-    }while(op != '\r');
-    
-    free(agenda);
+    }while(1);
     return 0;
 }

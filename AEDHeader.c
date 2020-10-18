@@ -3,37 +3,33 @@
 void limpa(){ //pra nao ficar limpando toda hora
     system("cls");
 }
-void menu(int *op){
+int menu(){
     char aux;
-    
+    int op;
     //printa o menu e limpa tela sempre que chamar a funcao
     
-    do{ // laco pra ficar repetindo o processo
-        limpa();
+    limpa();
 
-        printf("|____________MENU_____________|\n");
-        printf("|1- Adicionar nome            |\n");
-        printf("|2- Remover nome              |\n");
-        printf("|3 - Listar agenda            |\n");
-        printf("\n Digite Enter para sair . . . ");
-        fflush(stdin);
-        aux = getch();
+    printf("|____________MENU_____________|\n");
+    printf("|1- Adicionar nome            |\n");
+    printf("|2- Remover nome              |\n");
+    printf("|3 - Listar agenda            |\n");
+    printf("\n Digite Enter para sair . . . ");
+    fflush(stdin);
+    aux = getchar();
+    op = aux - '0';
 
-        if(aux == '\r'){ // testa se o usuario fechou o programa
-            *op = '\r';
-            return;
-        }else{
-            *op= aux - '0'; // modifica o valor de op -'0'para tirar o char
-            
-            if(*op>3 || *op<1){ // se digitar um valor invalido ele pede pra digitar certo
-                limpa();
-                printf("Digite um valor Valido\n");
-                system("pause");
-            }
-            return;
+    if(aux == '\n'){ // testa se o usuario fechou o programa
+        return 0;
+    }else{       
+       if(op>3 || op<1){ // se digitar um valor invalido ele pede pra digitar certo
+            limpa();
+            printf("Digite um valor Valido\n");
+            system("pause");
         }
+        return op;
+    }
         
-    }while(aux != '\r'); //parada
 }
 char* addnome(char *agenda, int *tam, int *i ){
     char novonome[50]; int posicao=0;
@@ -52,20 +48,13 @@ char* addnome(char *agenda, int *tam, int *i ){
     limpa();
     *tam = *tam + strlen(novonome) + 1;
 
-    if(*i==0){
-        agenda = malloc(*tam*sizeof(char));
-        strcpy(agenda,novonome); // recebe o novo nome inclusive o \n do final
-        *i=*i+1; 
-        agenda[*tam-1] = '\0'; //coloca o \0 no final pro cod entender que ali é o ultimo caracter
-        return agenda;
-    }else{
-        posicao = strlen(agenda); //pega a o tamanho da agenda até agora
-        agenda =  realloc(agenda, *tam*sizeof(char)); //realoca o tamanho da agenda
-        strcpy(agenda+posicao,novonome); 
-        agenda[*tam-1]='\0'; //bota \0 no final pra entender que ali acaba
-        *i=*i+1;
-        return agenda;
-    }    
+    posicao = strlen(agenda); //pega a o tamanho da agenda até agora
+    agenda = (char*) realloc(agenda, *tam*sizeof(char)); //realoca o tamanho da agenda
+    strcpy(agenda+posicao,novonome);
+    //strcat(agenda,novonome); 
+    agenda[*tam-1]='\0'; //bota \0 no final pra entender que ali acaba
+    *i=*i+1;
+    return agenda;    
 }
 void listar(char *agenda){
     int aux, in=0;
@@ -82,7 +71,7 @@ void listar(char *agenda){
     system("pause");
 }
 char* apaga(char *agenda, int *tam, int *i){
-    int qtdnome=0, remover;
+    int qtdnome=0, remover=0;
 
     limpa();
     
@@ -90,14 +79,17 @@ char* apaga(char *agenda, int *tam, int *i){
         limpa();
         printf("Digite o numero do nome a ser removido (confira a lista antes): ");
         scanf("%i", &remover);
-        fflush(stdin);
-        if(remover> *i || remover < 0){
+        if(strlen(agenda) < 1){
+            return agenda;
+        }
+        if(remover > *i || remover < 0){
             printf("\nDigito incorreto, digite um valor valido\n");
             system("pause");
+            break;
         }
     } while(remover > *i || remover < 0);
 
-    int n, m=0;
+    int n=0, m=0;
     for(n=0;agenda[n] != '\0'; n++) //esse for percorre a agenda para contar as palavras nos if
     {
         if(agenda[n-1] == '\n' && n > 0){ // descobre se uma palavra foi contada
@@ -118,7 +110,8 @@ char* apaga(char *agenda, int *tam, int *i){
         }
     }
     *i=*i-1;
-    *tam = strlen(agenda);
-    agenda = realloc(agenda,*tam*sizeof(char));
+    *tam = *tam-m;
+    agenda =(char*) realloc(agenda,*tam*sizeof(char));
+    agenda[*tam-1] = '\0';
     return agenda;
 }

@@ -6,10 +6,11 @@
 #include <string.h>
 #include <conio.h>
 
-void menu(int *op);
+int menu();
 void limpa();
 char* addnome(char *agenda, int *tam, int *i );
 char* apaga(char *agenda, int *tam, int *i);
 void listar(char *agenda);
 
 #endif
+
